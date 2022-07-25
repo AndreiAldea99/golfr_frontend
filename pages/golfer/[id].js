@@ -13,13 +13,12 @@ const Golfer = () => {
   const [ scores, setScores ] = useState(null)
 
   useEffect(() => {
-    const url = FEED_URL + '/' + id
+    const urlName = FEED_URL + '/' + id + '/name'
+    const urlScores = FEED_URL + '/' + id + '/scores'
 
-    const fetchData = async () => {
-      let json = null
-
+    const fetchDataName = async () => {
       try {
-        const response = await fetch(url)
+        const response = await fetch(urlName)
 
         if (!response.ok) {
           return response.text().then(text => {
@@ -27,18 +26,37 @@ const Golfer = () => {
           })
         }
 
-        json = await response.json()
+        const json = await response.json()
 
         setUsername(json.user.name)
+
+      } catch (error) {
+        throw new Error(error)
+      }
+    }
+
+    const fetchDataScores = async () => {
+      try {
+        const response = await fetch(urlScores)
+
+        if (!response.ok) {
+          return response.text().then(text => {
+            throw new Error(text)
+          })
+        }
+
+        const json = await response.json()
+
         setScores(json.user.scores)
-        
+
       } catch (error) {
         throw new Error(error)
       }
     }
 
     if (router.isReady) {
-      fetchData()
+      fetchDataName()
+      fetchDataScores()
     }
   }, [ router.isReady, id ])
 
