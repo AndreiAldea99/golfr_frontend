@@ -8,7 +8,7 @@ const Golfer = () => {
   const { id } = router.query
 
   const { golferName, errorGolfer } = useGolferName(id)
-  const { golferScores, errorScores }  = useGolferScores(id)
+  const { golferScores, errorScores } = useGolferScores(id)
 
   return (
     <>
